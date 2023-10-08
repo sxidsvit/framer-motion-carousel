@@ -25,9 +25,10 @@ export default function SuggestedCarousel() {
   const [cats, setCats] = useState<Cat[]>([])
   const [description, setDescription] = useState<Map<string, string>>(new Map()) 
 
+
   useEffect(() => {
     const getCats = (() => {
-      fetch('https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=beng').
+      fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/images/search?limit=10&breed_ids=beng`).
         then(response => response.json())
         .then(data => { setCats(data) })
     })
@@ -39,7 +40,7 @@ export default function SuggestedCarousel() {
     const getDescriptions = () => {
       if (cats.length > 0) {
         for (const cat of cats) {
-          fetch(`https://api.thecatapi.com/v1/images/${cat.id}`).
+          fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/images/${cat.id}`).
             then(response => response.json())
             .then(data => {
               catsDescriptions.set(
@@ -56,9 +57,6 @@ export default function SuggestedCarousel() {
   }, [cats.length])
 
   console.log('cats: ', cats);
-  
-
-
 
   const containerRef = useRef<HTMLUListElement>(null)
   const itemsRef = useRef<(HTMLLIElement | null)[]>([])
